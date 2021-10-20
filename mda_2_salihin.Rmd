@@ -1,0 +1,212 @@
+---
+title: "mda_2_salihin"
+author: "Mohamed Salihin Subhan"
+date: "19/10/2021"
+output: github_document
+---
+
+Load packages
+```{r}
+library(tidyverse)
+library(dplyr)
+library(vdemdata)
+```
+
+
+# Task 1: Process and summarize your data
+
+## 1.1)
+
+The 4 research questions from Milestone 1:
+
+1. Does level of democracy lead to higher levels of economic development?
+2. Does freedom of expression vary depending on regime type?
+3. What explains why some countries have high levels of economic development despite having low levels of democracy?
+4. Does education level influence both economic development and level of democracy?
+
+## 1.2)
+
+For each of your four research questions, choose one task from options 1-4 (summarizing), and one other task from 4-8 (graphing). 
+
+You should have 2 tasks done for each research question (8 total). Make sure it makes sense to do them! (e.g. don’t use a numerical variables for a task that needs a categorical variable.). Comment on why each task helps (or doesn’t!) answer the corresponding research question.
+
+### Summarizing
+**Task 1** -- Compute the range, mean, and two other summary statistics of one numerical variable across the groups of one categorical variable from your data.
+
+I have computed the range, mean, median, and standard deviation of GDP per capita in 2015 (e_migdppc) across regime type (e_boix_regime, democracy or non-democracy):
+
+GDP per capita for democracies
+- Range: $694 - $82,713
+- Mean: $20,559
+- Median: $16,373
+- Standard Deviation: $16,479.92
+
+
+GDP per capita for non-democracies
+- Range: $576 - $15,6029
+- Mean: $14,936
+- Median: $7889
+- Standard Deviation: $24,065.82
+
+
+```{r}
+# Creating subset of vdem dataset for year 2015
+
+vdem_2015 <- vdem %>%
+  filter(year == 2015) %>%
+  filter(!is.na(e_boix_regime))
+
+# Calculating, range, mean, median, and sd of GDP per capita in 2015 for democracies
+summary(vdem_2015$e_migdppc[vdem_2015$e_boix_regime == 1])
+sd(vdem_2015$e_migdppc[vdem_2015$e_boix_regime == 1], na.rm=T)
+
+# Calculating, range, mean, median, and sd of GDP per capita in 2015 for non-democracies
+summary(vdem_2015$e_migdppc[vdem_2015$e_boix_regime == 0])
+sd(vdem_2015$e_migdppc[vdem_2015$e_boix_regime == 0], na.rm=T)
+```
+
+
+### Graphing
+**Task 5** -- Create a graph out of summarized variables that has at least two geom layers.
+
+I have created a histogram of GDP per capita (in 2015) for democracies, adding the mean to the graph as an additional geom layer.
+
+I have also created a similar histogram of GDP per capita (in 2015) for non-democracies.
+
+```{r}
+# Calculating and creating objects for means for GDP per capita (2015) for Democracies and Non-democracies
+GDP_dem_median <- median(vdem_2015$e_migdppc[vdem_2015$e_boix_regime == 1], na.rm=T)
+
+GDP_nondem_median <- median(vdem_2015$e_migdppc[vdem_2015$e_boix_regime == 0], na.rm=T)
+
+# Generating a histogram of GDP per capita (in 2015) for Democracies with median geom layer
+vdem_2015 %>% 
+  filter(e_boix_regime == 1) %>%
+  ggplot(aes(e_migdppc)) +
+  geom_histogram() +
+  geom_vline(aes(xintercept = GDP_dem_median), colour="red") +
+  geom_text(x=30000, y=8, label="Median = $16,373", colour="red") +
+  theme_minimal() +
+  labs(title = "Distribution of GDP per capita (2015) for Democratic countries", x = "GDP per capita", y = "Count") +
+  scale_x_continuous(labels = scales::dollar_format(), 
+                     breaks = seq(0, 80000, by = 20000))
+
+# Generating a histogram of GDP per capita (in 2015) for Non-democracies with median geom layer
+vdem_2015 %>% 
+  filter(e_boix_regime == 0) %>%
+  ggplot(aes(e_migdppc)) +
+  geom_histogram() +
+  geom_vline(aes(xintercept = GDP_nondem_median), colour="red") +
+  geom_text(x=40000, y=13, label="Median = $7889", colour="red") +
+  theme_minimal() +
+  labs(title = "Distribution of GDP per capita (2015) for Non-democratic countries", x = "GDP per capita", y = "Count") +
+  scale_x_continuous(labels = scales::dollar_format(), 
+                     breaks = seq(0, 200000, by = 30000))
+  
+```
+
+
+
+## 1.3)
+
+Based on the operations that you’ve completed, how much closer are you to answering your research questions? Think about what aspects of your research questions remain unclear. Can your research questions be refined, now that you’ve investigated your data a bit more? Which research questions are yielding interesting results?
+
+Answer:
+I am definitely closer towards answering my research questions. It seems that there is definitely a difference in overall levels of development based on regime type. While there are indeed richer non-democratic countries, and the richest (in terms of GDP per capita) is a non-democratic country, the spread of the GDP per capita is smaller among democracies. This indicates another variable that might be influencing the level of economic development specific to non-democracies. 
+
+
+
+# Task 2: Tidy your data
+
+## 2.1) 
+
+Can you identify if your data is tidy or untidy? Go through all your columns, or if you have >8 variables, just pick 8, and explain whether the data is untidy or tidy.
+
+The columns I have chosen are:
+
+1. Country -- (country_name)
+2. Regime type -- democracy, non-democracy (e_boix_regime)
+3. Democratic transition -- democratic breakdown, no change, democratic transition (e_democracy_trans)
+4. Status -- free, partly free, or not free (e_fh_status)
+5. GDP per capita -- (e_migdppc)
+6. Average years of education -- (e_peaveduc)
+7. Country land area -- (e_area)
+8. Regime score -- higher means more democratic (v2x_polyarchy)
+
+
+As you can see from my exploration below, the data is tidy. Each row represents an observation for a unique country, and each column is a (one) variable instead of a value or a combination of variables.
+
+```{r}
+# Subsetting the vdem dataset using select() to choose only 8 columns from 2015
+vdem_subset <- vdem %>%
+  filter(year == 2015) %>%
+  filter(!is.na(e_boix_regime)) %>%
+  select(country_name, e_boix_regime, e_democracy_trans, e_fh_status, e_migdppc, e_peaveduc, e_area, v2x_polyarchy)
+
+vdem_subset_tidy <- as.tibble(vdem_subset)
+
+# Converting regime type to character variable
+vdem_subset_tidy$e_boix_regime <- ifelse(vdem_subset_tidy$e_boix_regime == 1, "democracy", "nondemocracy")
+
+# Removing NAs
+vdem_subset_tidy <- na.omit(vdem_subset_tidy)
+
+head(vdem_subset_tidy)
+
+# Checking if the data is tidy
+dim(vdem_subset_tidy)[1] ## tells us how many rows!
+length(unique(vdem_subset_tidy$country_name)) ## tells us how many unique countries!
+
+# Are the above the same? Yes!
+identical(dim(vdem_subset_tidy)[1], length(unique(vdem_subset_tidy$country_name)))
+```
+
+
+
+## 2.2)
+
+Now, if your data is tidy, untidy it! Then, tidy it back to it’s original state.
+
+If your data is untidy, then tidy it! Then, untidy it back to it’s original state.
+
+Be sure to explain your reasoning for this task. Show us the “before” and “after”.
+
+This is how the tidy data looks like "before":
+```{r}
+head(vdem_subset_tidy)
+```
+
+Now I will "untidy" the dataset:
+```{r}
+vdem_subset_untidy <- vdem_subset_tidy %>%
+  pivot_wider(id_cols = country_name,
+              names_from = e_boix_regime,
+              values_from = c(e_democracy_trans, e_fh_status, e_migdppc, e_peaveduc, e_area, v2x_polyarchy),
+              names_sep = "^"
+              )
+
+print(vdem_subset_untidy)
+```
+
+And now I shall tidy it again:
+```{r}
+vdem_subset_tidy_again <- vdem_subset_untidy %>% 
+  pivot_longer(cols = -country_name, 
+               names_to  = c(".value", "democracy"),
+               names_sep = "^")
+
+# c(".value", "e_boix_regime", "e_democracy_trans", "e_fh_status", "e_migdppc", "e_peaveduc", "e_area", "v2x_polyarchy")
+
+print(vdem_subset_tidy_again)
+```
+
+
+
+
+## 2.3)
+
+Based on your interest, and your analyses, pick 2 of the 4 research questions to continue your analysis in milestone 3, and explain your decision.
+
+Try to choose a version of your data that you think will be appropriate to answer these 2 questions in milestone 3. Use between 4 and 8 functions that we’ve covered so far (i.e. by filtering, cleaning, tidy’ing, dropping irrelvant columns, etc.).
+
+When you are done, knit an md file. This is what we will mark! Make sure to open it and check that everything has knitted correctly before submitting your tagged release.
