@@ -125,12 +125,12 @@ Can you identify if your data is tidy or untidy? Go through all your columns, or
 The columns I have chosen are:
 
 1. Country -- (country_name)
-2. Regime type -- democracy, non-democracy (e_boix_regime)
-3. Democratic transition -- democratic breakdown, no change, democratic transition (e_democracy_trans)
-4. Status -- free, partly free, or not free (e_fh_status)
-5. GDP per capita -- (e_migdppc)
-6. Average years of education -- (e_peaveduc)
-7. Country land area -- (e_area)
+2. Region -- (e_regionpol_6C)
+3. Regime type -- democracy, non-democracy (e_boix_regime)
+4. Democratic transition -- democratic breakdown, no change, democratic transition (e_democracy_trans)
+5. Status -- free, partly free, or not free (e_fh_status)
+6. GDP per capita -- (e_migdppc)
+7. Average years of education -- (e_peaveduc)
 8. Regime score -- higher means more democratic (v2x_polyarchy)
 
 
@@ -141,7 +141,7 @@ As you can see from my exploration below, the data is tidy. Each row represents 
 vdem_subset <- vdem %>%
   filter(year == 2015) %>%
   filter(!is.na(e_boix_regime)) %>%
-  select(country_name, e_boix_regime, e_democracy_trans, e_fh_status, e_migdppc, e_peaveduc, e_area, v2x_polyarchy)
+  select(country_name, e_regionpol_6C, e_boix_regime, e_democracy_trans, e_fh_status, e_migdppc, e_peaveduc, v2x_polyarchy)
 
 vdem_subset_tidy <- as.tibble(vdem_subset)
 
@@ -179,10 +179,10 @@ head(vdem_subset_tidy)
 Now I will "untidy" the dataset:
 ```{r}
 vdem_subset_untidy <- vdem_subset_tidy %>%
-  pivot_wider(id_cols = country_name,
+  pivot_wider(id_cols = c(country_name, e_regionpol_6C, e_democracy_trans, e_fh_status),
               names_from = e_boix_regime,
-              values_from = c(e_democracy_trans, e_fh_status, e_migdppc, e_peaveduc, e_area, v2x_polyarchy),
-              names_sep = "^"
+              values_from = c(e_migdppc, e_peaveduc, v2x_polyarchy),
+              names_sep = "%"
               )
 
 print(vdem_subset_untidy)
@@ -191,14 +191,17 @@ print(vdem_subset_untidy)
 And now I shall tidy it again:
 ```{r}
 vdem_subset_tidy_again <- vdem_subset_untidy %>% 
-  pivot_longer(cols = -country_name, 
-               names_to  = c(".value", "democracy"),
-               names_sep = "^")
+  pivot_longer(cols = 'e_migdppc%democracy':'v2x_polyarchy%nondemocracy', 
+               names_to  = c(".value", "e_boix_regime"),
+               names_sep = "%") %>%
+  na.omit() %>%
+  relocate(e_boix_regime, .after = e_regionpol_6C)
 
-# c(".value", "e_boix_regime", "e_democracy_trans", "e_fh_status", "e_migdppc", "e_peaveduc", "e_area", "v2x_polyarchy")
+
 
 print(vdem_subset_tidy_again)
 ```
+
 
 
 
@@ -210,3 +213,12 @@ Based on your interest, and your analyses, pick 2 of the 4 research questions to
 Try to choose a version of your data that you think will be appropriate to answer these 2 questions in milestone 3. Use between 4 and 8 functions that we’ve covered so far (i.e. by filtering, cleaning, tidy’ing, dropping irrelvant columns, etc.).
 
 When you are done, knit an md file. This is what we will mark! Make sure to open it and check that everything has knitted correctly before submitting your tagged release.
+
+### Answer:
+
+I choose RQ #1 and #3:
+
+1. Does level of democracy lead to higher levels of economic development?
+3. What explains why some countries have high levels of economic development despite having low levels of democracy?
+
+My reasoning is that I am most interested in studying RQ #1 because it is a classic question in political science literature and is of great interest to me. Secondly, RQ #3 naturally follows from RQ #1, in that countries with high levels of economic development and low levels of democracy constitute "deviant" cases which need to be explored further.
