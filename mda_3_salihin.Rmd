@@ -48,10 +48,14 @@ From Milestone 2, you chose two research questions. What were they? Put them her
 
 For this exercise, you'll be choosing two of the three tasks below -- both tasks that you choose are worth 5 points each. 
 
-But first, tasks 1 and 2 below ask you to modify a plot you made in a previous milestone. The plot you choose should involve plotting across at least three groups (whether by facetting, or using an aesthetic like colour). Place this plot below (you're allowed to modify the plot if you'd like). If you don't have such a plot, you'll need to make one. Place the code for your plot below.
+But first, tasks 1 and 2 below ask you to modify a plot you made in a previous milestone. **The plot you choose should involve plotting across at least three groups (whether by facetting, or using an aesthetic like colour)**. Place this plot below (you're allowed to modify the plot if you'd like). If you don't have such a plot, you'll need to make one. Place the code for your plot below.
 
 <!-------------------------- Start your work below ---------------------------->
 ```{r}
+#### SCRAP AND REDO BELOW:
+# I will have to create a facet-wrapped graph of GDP per capita for countries based on region!
+
+
 # Creating subset of vdem dataset for year 2015
 vdem_2015 <- vdem %>%
   filter(year == 2015) %>%
