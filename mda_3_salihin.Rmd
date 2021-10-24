@@ -1,6 +1,6 @@
 ---
 title: "Mini Data-Analysis Deliverable 3"
-output: html_document
+output: github_document
 ---
 
 
@@ -32,15 +32,15 @@ In this (3rd) milestone, you'll be sharpening some of the results you obtained f
 Begin by loading your data and the tidyverse package below: 
 
 ```{r, message = FALSE}
-library(datateachr) # <- might contain the data you picked!
 library(tidyverse)
+library(vdemdata)
 ```
 
 From Milestone 2, you chose two research questions. What were they? Put them here.
 
 <!-------------------------- Start your work below ---------------------------->
-1. *FILL_THIS_IN*
-2. *FILL_THIS_IN*
+1. Does level of democracy lead to higher levels of economic development?
+2. What explains why some countries have high levels of economic development despite having low levels of democracy?
 <!----------------------------------------------------------------------------->
 
 
@@ -51,6 +51,23 @@ For this exercise, you'll be choosing two of the three tasks below -- both tasks
 But first, tasks 1 and 2 below ask you to modify a plot you made in a previous milestone. The plot you choose should involve plotting across at least three groups (whether by facetting, or using an aesthetic like colour). Place this plot below (you're allowed to modify the plot if you'd like). If you don't have such a plot, you'll need to make one. Place the code for your plot below.
 
 <!-------------------------- Start your work below ---------------------------->
+```{r}
+# Creating subset of vdem dataset for year 2015
+vdem_2015 <- vdem %>%
+  filter(year == 2015) %>%
+  filter(!is.na(e_boix_regime))
+
+
+# Generating a histogram of GDP per capita (in 2015) for Democracies with median geom layer
+vdem_2015 %>% 
+  mutate(e_boix_regime = recode(e_boix_regime, '0' = "Non-democracies", '1' = "Democracies")) %>%
+  ggplot(aes(e_migdppc)) +
+  geom_histogram() +
+  theme_minimal() +
+  labs(title = "Distribution of GDP per capita (2015) for Democratic countries", x = "GDP per capita", y = "Count") +
+  scale_x_continuous(labels = scales::dollar_format()) +
+  facet_wrap(vars(e_boix_regime))
+```
 
 
 

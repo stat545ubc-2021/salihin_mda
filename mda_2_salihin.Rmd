@@ -31,6 +31,7 @@ For each of your four research questions, choose one task from options 1-4 (summ
 You should have 2 tasks done for each research question (8 total). Make sure it makes sense to do them! (e.g. don’t use a numerical variables for a task that needs a categorical variable.). Comment on why each task helps (or doesn’t!) answer the corresponding research question.
 
 ### Summarizing
+
 **Task 1** -- Compute the range, mean, and two other summary statistics of one numerical variable across the groups of one categorical variable from your data.
 
 I have computed the range, mean, median, and standard deviation of GDP per capita in 2015 (e_migdppc) across regime type (e_boix_regime, democracy or non-democracy):
@@ -67,6 +68,7 @@ sd(vdem_2015$e_migdppc[vdem_2015$e_boix_regime == 0], na.rm=T)
 
 
 ### Graphing
+
 **Task 5** -- Create a graph out of summarized variables that has at least two geom layers.
 
 I have created a histogram of GDP per capita (in 2015) for democracies, adding the mean to the graph as an additional geom layer.
