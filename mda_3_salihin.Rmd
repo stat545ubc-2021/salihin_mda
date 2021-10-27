@@ -164,6 +164,14 @@ Fit a model or run a hypothesis test that provides insight on this variable with
 
 <!-------------------------- Start your work below ---------------------------->
 
+```{r}
+# Fitting a model of GDP per capita (e_migdppc) on regime score (v2x_polyarchy)
+reg_GDP_regime <- lm(e_migdppc ~ v2x_polyarchy, vdem_2015)
+
+print(reg_GDP_regime)
+
+```
+
 
 <!----------------------------------------------------------------------------->
 
