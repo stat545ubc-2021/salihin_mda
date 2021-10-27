@@ -63,7 +63,7 @@ vdem_2015 %>%
   ggplot(aes(e_migdppc)) +
   geom_histogram() +
   theme_minimal() +
-  labs(title = "Distribution of GDP per capita (2015) for Democratic countries", x = "GDP per capita", y = "Count") +
+  labs(title = "Distribution of GDP per capita (2015) across regions", x = "GDP per capita", y = "Count") +
   scale_x_continuous(labels = scales::dollar_format()) +
   facet_wrap(vars(e_regionpol_6C))
 ```
@@ -90,21 +90,23 @@ Now, choose two of the following tasks.
 **Task Number**: 1. Produce a new plot that reorders a factor in your original plot
 
 ```{r}
-# Creating the histogram of GDP per capita (e_migdppc) across different regions (e_regionpol_6C), but factorising region!
+# Creating the histogram of GDP per capita (e_migdppc) across different regions (e_regionpol_6C), but factorising region based on increasing median of GDP per capita
 vdem_2015 %>% 
   mutate(e_regionpol_6C = recode(e_regionpol_6C, '1' = "E. Europe & C. Asia", '2' = "L. Am & Carib", '3' = "M.E. & N. Africa", '4' = "S.S. Africa", '5' = "W. Eu & N. Am", '6' = "Asia & Pacific")) %>%
-  mutate(e_regionpol_6C = (fct_infreq(e_regionpol_6C)))
+  mutate(e_regionpol_6C = fct_reorder(e_regionpol_6C, e_boix_regime, mean)) %>%
   ggplot(aes(e_migdppc)) +
   geom_histogram() +
   theme_minimal() +
-  labs(title = "Distribution of GDP per capita (2015) for Democratic countries", x = "GDP per capita", y = "Count") +
+  labs(title = "Distribution of GDP per capita (2015) across regions", x = "GDP per capita", y = "Count") +
   scale_x_continuous(labels = scales::dollar_format()) +
   facet_wrap(vars(e_regionpol_6C))
 ```
 
+I chose to reorder the region variable based on the mean of the regime type variable (e_boix_regime). The idea here is that the mean of the regime type will indicate the proportion of countries which are democratic. I want to order the regions by increasing proportion of democratic countries because it will give me a good sense of where to find the countries which are "deviant" to my hypothesis (democracies are more likely to be economically-developed) based on their region.
 
 
 <!----------------------------------------------------------------------------->
+
 
 
 <!-------------------------- Start your work below ---------------------------->
@@ -112,9 +114,25 @@ vdem_2015 %>%
 **Task Number**: 2. Produce a new plot that groups some factor levels together into an "other" category
 
 ```{r}
-
+# Creating the histogram of GDP per capita (e_migdppc) across different regions (e_regionpol_6C), but re-categorising countries which are not 1) Western Europe and North America, 2) Asia & Pacific, and 3) Latin America and the Caribbean as "other".
+vdem_2015 %>% 
+  mutate(e_regionpol_6C = recode(e_regionpol_6C, 
+                                 '1' = "Other", 
+                                 '2' = "Other", 
+                                 '3' = "M.E. & N. Africa", 
+                                 '4' = "S.S. Africa", 
+                                 '5' = "W. Eu & N. Am", 
+                                 '6' = "Asia & Pacific")) %>%
+  mutate(e_regionpol_6C = fct_reorder(e_regionpol_6C, e_boix_regime, mean)) %>%
+  ggplot(aes(e_migdppc)) +
+  geom_histogram() +
+  theme_minimal() +
+  labs(title = "Distribution of GDP per capita (2015) across regions", x = "GDP per capita", y = "Count") +
+  scale_x_continuous(labels = scales::dollar_format()) +
+  facet_wrap(vars(e_regionpol_6C))
 ```
 
+I chose to group Latin America / Caribbean and Eastern Europe / Central Asia into the "Other" category because the distribution of GDP per capita in those regions are very similar. I suspect that the relationship between GDP per capita and regime type will be similar in these two regions as well, which is why I placed them together in the "Other" category. 
 
 
 <!----------------------------------------------------------------------------->
@@ -129,9 +147,9 @@ Pick a research question, and pick a variable of interest (we'll call it "Y") th
 
 <!-------------------------- Start your work below ---------------------------->
 
-**Research Question**: FILL_THIS_IN
+**Research Question**: Does level of democracy lead to higher levels of economic development?
 
-**Variable of interest**: FILL_THIS_IN
+**Variable of interest**: Economic development (e_migdppc)
 
 <!----------------------------------------------------------------------------->
 
