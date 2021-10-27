@@ -52,28 +52,21 @@ But first, tasks 1 and 2 below ask you to modify a plot you made in a previous m
 
 <!-------------------------- Start your work below ---------------------------->
 ```{r}
-#### SCRAP AND REDO BELOW:
-# I will have to create a facet-wrapped graph of GDP per capita for countries based on region!
-
-
-# Creating subset of vdem dataset for year 2015
+# Subsetting the vdem dataset to 2015 data
 vdem_2015 <- vdem %>%
   filter(year == 2015) %>%
   filter(!is.na(e_boix_regime))
 
-
-# Generating a histogram of GDP per capita (in 2015) for Democracies with median geom layer
+# Creating the histogram of GDP per capita (e_migdppc) across different regions (e_regionpol_6C)
 vdem_2015 %>% 
-  mutate(e_boix_regime = recode(e_boix_regime, '0' = "Non-democracies", '1' = "Democracies")) %>%
+  mutate(e_regionpol_6C = recode(e_regionpol_6C, '1' = "E. Europe & C. Asia", '2' = "L. Am & Carib", '3' = "M.E. & N. Africa", '4' = "S.S. Africa", '5' = "W. Eu & N. Am", '6' = "Asia & Pacific")) %>%
   ggplot(aes(e_migdppc)) +
   geom_histogram() +
   theme_minimal() +
   labs(title = "Distribution of GDP per capita (2015) for Democratic countries", x = "GDP per capita", y = "Count") +
   scale_x_continuous(labels = scales::dollar_format()) +
-  facet_wrap(vars(e_boix_regime))
+  facet_wrap(vars(e_regionpol_6C))
 ```
-
-
 
 <!----------------------------------------------------------------------------->
 
@@ -94,7 +87,20 @@ Now, choose two of the following tasks.
 
 <!-------------------------- Start your work below ---------------------------->
 
-**Task Number**: FILL_THIS_IN
+**Task Number**: 1. Produce a new plot that reorders a factor in your original plot
+
+```{r}
+# Creating the histogram of GDP per capita (e_migdppc) across different regions (e_regionpol_6C), but factorising region!
+vdem_2015 %>% 
+  mutate(e_regionpol_6C = recode(e_regionpol_6C, '1' = "E. Europe & C. Asia", '2' = "L. Am & Carib", '3' = "M.E. & N. Africa", '4' = "S.S. Africa", '5' = "W. Eu & N. Am", '6' = "Asia & Pacific")) %>%
+  mutate(e_regionpol_6C = (fct_infreq(e_regionpol_6C)))
+  ggplot(aes(e_migdppc)) +
+  geom_histogram() +
+  theme_minimal() +
+  labs(title = "Distribution of GDP per capita (2015) for Democratic countries", x = "GDP per capita", y = "Count") +
+  scale_x_continuous(labels = scales::dollar_format()) +
+  facet_wrap(vars(e_regionpol_6C))
+```
 
 
 
@@ -103,7 +109,11 @@ Now, choose two of the following tasks.
 
 <!-------------------------- Start your work below ---------------------------->
 
-**Task Number**: FILL_THIS_IN
+**Task Number**: 2. Produce a new plot that groups some factor levels together into an "other" category
+
+```{r}
+
+```
 
 
 
