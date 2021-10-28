@@ -2,7 +2,7 @@
 title: "Mini Data Analysis Milestone 1"
 author: "Mohamed Salihin Subhan"
 date: "04/10/2021"
-output: html_document
+output: github_document
 ---
 
 ---
