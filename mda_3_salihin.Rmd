@@ -212,6 +212,13 @@ Take a summary table that you made from Milestone 2 (Exercise 1.2), and write it
 - **Reproducibility criteria**: You should be able to delete the csv file, and remake it simply by knitting this Rmd file. 
   
 <!-------------------------- Start your work below ---------------------------->
+```{r}
+# Creating the summary table from Milestone 2: Calculating, range, mean, and sd of GDP per capita in 2015 for democracies
+summ_tab_mda_2 <- summary(vdem_2015$e_migdppc[vdem_2015$e_boix_regime == 1])
+
+# Write the summary table as a csv file
+
+```
 
 
 <!----------------------------------------------------------------------------->
