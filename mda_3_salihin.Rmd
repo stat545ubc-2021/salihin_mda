@@ -185,6 +185,16 @@ Produce something relevant from your fitted model: either predictions on Y, or a
   
 <!-------------------------- Start your work below ---------------------------->
 
+```{r}
+# Printing the p-value of the regression coefficient (v2x_polyarchy)
+reg_GDP_regime_values <- broom::tidy(reg_GDP_regime)
+
+names(reg_GDP_regime_values$p.value) <- c("Intercept", "Regime Score")
+
+print(reg_GDP_regime_values$p.value)
+```
+
+I chose to produce the p-value of the regression coefficient which is regime score (v2x_polyarchy). The p-value here tells us that the probability of observing the regression coefficient of 17914 if the null hypothesis is true is 0.3%. With such a low p-value, the evidence strongly suggests that we can confidently reject the null hypothesis that the regime score has no effect on the GDP per capita.
 
 <!----------------------------------------------------------------------------->
 
