@@ -1,4 +1,4 @@
-Mini Data-Analysis Deliverable 1
+Mini Data Analysis Milestone 1
 ================
 Mohamed Salihin Subhan
 04/10/2021
