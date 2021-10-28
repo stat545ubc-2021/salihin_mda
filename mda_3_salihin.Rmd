@@ -272,12 +272,6 @@ Each milestone document is contained in its respective folder, and nowhere else.
 
 Every level-1 folder (that is, the ones stored in the top level, like "Milestone1" and "output") has a `README` file, explaining in a sentence or two what is in the folder, in plain language (it's enough to say something like "This folder contains the source for Milestone 1").
 
-```{r}
-# Creating folders for each mda_#_salihin file
-dir.create(here::here("mda_1_salihin"))
-dir.create(here::here("mda_2_salihin"))
-dir.create(here::here("mda_3_salihin"))
-```
 
 ## Output (2 points)
 
