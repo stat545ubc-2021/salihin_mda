@@ -33,6 +33,7 @@ Begin by loading your data and the tidyverse package below:
 
 ```{r, message = FALSE}
 library(tidyverse)
+library(readr)
 library(vdemdata)
 ```
 
@@ -213,11 +214,14 @@ Take a summary table that you made from Milestone 2 (Exercise 1.2), and write it
   
 <!-------------------------- Start your work below ---------------------------->
 ```{r}
+# Creating the output folder
+dir.create(here::here("output"))
+
 # Creating the summary table from Milestone 2: Calculating, range, mean, and sd of GDP per capita in 2015 for democracies
-summ_tab_mda_2 <- summary(vdem_2015$e_migdppc[vdem_2015$e_boix_regime == 1])
+summ_tab_mda_2 <-summary(vdem_2015$e_migdppc[vdem_2015$e_boix_regime == 1])
 
 # Write the summary table as a csv file
-
+write_csv(summ_tab_mda_2, here::here("output", "summ_tab_mda_2.csv"))
 ```
 
 
