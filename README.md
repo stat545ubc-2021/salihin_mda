@@ -12,7 +12,10 @@ If you want to explore this project, please start by observing the description o
 The repository contains the following documents:
 
 1. ```README.md``` : You are reading this file. It explains the repository and its contents. 
-2. ```mda_1_salihin``` : This is a folder containing the source and github_document files for Milestone 1. 
+2. ```mda_1_salihin``` : This is a folder containing the source and github_document files for Milestone 1.
 3. ```mda_2_salihin``` : This is a folder containing the source and github_document files for Milestone 2. 
 4. ```mda_3_salihin``` : This is a folder containing the source and github_document files for Milestone 3. 
 5. ```output``` : This is a folder containing the objects saved from the Milestone source files. 
+6. ```.gitignore``` : This is a file instructing Github which files to ignore when committing changes and pushing to Github. 
+7. ```.Rhistory``` : This is a file containing the history of commands used in R.
+8. ```salihin_mda2.Rproj``` : This is the Rproj file for the cloned repository.
