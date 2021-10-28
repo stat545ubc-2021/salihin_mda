@@ -34,6 +34,7 @@ Begin by loading your data and the tidyverse package below:
 ```{r, message = FALSE}
 library(tidyverse)
 library(readr)
+library(gtsummary)
 library(vdemdata)
 ```
 
@@ -220,7 +221,10 @@ dir.create(here::here("output"))
 # Creating the summary table from Milestone 2: Calculating, range, mean, and sd of GDP per capita in 2015 for democracies
 summ_tab_mda_2 <-summary(vdem_2015$e_migdppc[vdem_2015$e_boix_regime == 1])
 
-# Write the summary table as a csv file
+# Using the data.frame command to convert the summary table into a data frame so it can be saved as a csv file
+summ_tab_mda_2 <- data.frame(unclass(summ_tab_mda_2), check.names = FALSE, stringsAsFactors = FALSE)
+
+# Write the summary table as a csv file and saving it to the output folder
 write_csv(summ_tab_mda_2, here::here("output", "summ_tab_mda_2.csv"))
 ```
 
@@ -235,6 +239,13 @@ Write your model object from Exercise 2 to an R binary file (an RDS), and load i
 
 <!-------------------------- Start your work below ---------------------------->
 
+```{r}
+# Save model object as RDS
+saveRDS(reg_GDP_regime, here::here("output", "model_object_mda_3.csv"))
+
+# Read model object
+reg_GDP_regime_2 <- readRDS(here::here("output", "model_object_mda_3.csv"))
+```
 
 <!----------------------------------------------------------------------------->
 
